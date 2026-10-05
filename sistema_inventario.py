@@ -1,20 +1,17 @@
 class Producto:
     def __init__(self, nombre, precio, cantidad):
-        # Validamos el nombre
         if not isinstance(nombre, str):
             raise TypeError("El nombre debe ser una cadena de texto.")
 
         if nombre.strip() == "":
             raise ValueError("El nombre del producto no puede estar vacío.")
 
-        # Validamos el precio
         if not isinstance(precio, (int, float)):
             raise TypeError("El precio debe ser un número.")
 
         if precio < 0:
             raise ValueError("El precio no puede ser negativo.")
 
-        # Validamos la cantidad
         if not isinstance(cantidad, int):
             raise TypeError("La cantidad debe ser un número entero.")
 
@@ -66,8 +63,16 @@ class Inventario:
         self.productos.append(producto)
 
     def buscar_producto(self, nombre):
+        if not isinstance(nombre, str):
+            raise TypeError("El nombre debe ser una cadena de texto.")
+
+        if nombre.strip() == "":
+            raise ValueError("El nombre no puede estar vacío.")
+
+        nombre_buscado = nombre.strip().lower()
+
         for producto in self.productos:
-            if producto.nombre.lower() == nombre.lower():
+            if producto.nombre.lower() == nombre_buscado:
                 return producto
 
         return None
@@ -105,12 +110,10 @@ def menu_principal(inventario):
         if opcion == "1":
             try:
                 nombre = input("Nombre del producto: ")
-
                 precio = float(input("Precio del producto: "))
                 cantidad = int(input("Cantidad del producto: "))
 
                 producto = Producto(nombre, precio, cantidad)
-
                 inventario.agregar_producto(producto)
 
                 print("\nProducto agregado correctamente.")
@@ -134,6 +137,9 @@ def menu_principal(inventario):
                 print(producto)
 
             except ValueError as error:
+                print(f"\nError: {error}")
+
+            except TypeError as error:
                 print(f"\nError: {error}")
 
         elif opcion == "3":
